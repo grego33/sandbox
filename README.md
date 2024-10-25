@@ -4,10 +4,10 @@ Welcome to the **Sandbox Repository**! This is a space dedicated to testing, exp
 
 ## Contents
 
-- **Experiments**: Small-scale projects and tests with various programming languages and tools.
-- **Snippets**: Useful code snippets that can be reused in other projects.
-- **Prototypes**: Early-stage prototypes and proof-of-concept implementations.
-- **Documentation**: Notes, research, and documentation related to various experiments and concepts explored here.
+- **experiments**: Small-scale projects and tests with various programming languages and tools.
+- **snippets**: Useful code snippets that can be reused in other projects.
+- **prototypes**: Early-stage prototypes and proof-of-concept implementations.
+- **docs**: Notes, research, and documentation related to various experiments and concepts explored here.
 
 ## Usage
 
