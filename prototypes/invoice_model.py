@@ -49,6 +49,20 @@ class Invoice:
     def grand_total(self) -> float:
         return self.parts_subtotal + self.labor_subtotal + self.fees_total
 
+    def parts_to_array(self) -> List[List]:
+        return [
+            [part.name, part.unit_price, part.quantity, part.core_charge, part.total_price]
+            for part in self.parts
+        ]
+    
+    def labor_to_array(self) -> List[List]:
+        return [
+            [l.description, l.hours, l.hourly_rate]
+            for l in self.labor
+        ]
+    
+
+
     def summary(self) -> dict:
         # Generate a summary for easy review of each section
         return {
