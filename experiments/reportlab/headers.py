@@ -40,6 +40,8 @@ def create_pdf_with_header(filename):
         Paragraph("Page 1 content goes here...", getSampleStyleSheet()['BodyText']), 
         PageBreak(),
         Paragraph("Page 2 content goes here...", getSampleStyleSheet()['BodyText']), 
+        PageBreak(),
+        Paragraph("Page 3 content goes here...", getSampleStyleSheet()['BodyText']), 
     ]
     doc.build(
         content,
