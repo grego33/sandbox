@@ -49,4 +49,4 @@ def create_pdf_with_header(filename):
     )
 
 # Create the PDF
-create_pdf_with_header("simple_report_with_header.pdf")
+create_pdf_with_header("data/simple_report_with_header.pdf")

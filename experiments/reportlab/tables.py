@@ -38,4 +38,4 @@ def create_pdf(filename):
     document.build(elements)
 
 if __name__ == "__main__":
-    create_pdf("simple_table.pdf")
+    create_pdf("data/simple_table.pdf")

@@ -49,4 +49,4 @@ def create_pdf_with_footer(filename):
     )
 
 
-create_pdf_with_footer("simple_report_with_footer.pdf")
+create_pdf_with_footer("data/simple_report_with_footer.pdf")
