@@ -12,7 +12,7 @@ def create_simple_table():
     ]
 
     # Calculate column widths
-    margin_width  = 50
+    margin_width  = 72
     page_width = letter[0] - margin_width * 2
     num_columns = len(data[0])
     column_width = page_width / num_columns
@@ -39,7 +39,7 @@ def create_mockup_table():
     ]
 
     # Calculate column widths
-    margin_width  = 50
+    margin_width  = 72
     page_width = letter[0] - margin_width * 2
     num_columns = len(data[0])
     column_width = page_width / num_columns
@@ -60,6 +60,32 @@ def create_mockup_table():
 
     return table
 
+def create_key_value_table():
+    data = [
+        ['Key 1', 'Value 1'],
+        ['Key 2', 'Value 2'],
+        ['Key 3', 'Value 3'],
+        ['Key 4', 'Value 4 with more text'],
+        ['Key 5', 'Value 5 with even more text so much that it exceeds the cell width and causes the text to wrap around to the next line'],
+    ]
+
+    # Convert data to Paragraphs for text wrapping
+    style = getSampleStyleSheet()['BodyText']
+    data = [[Paragraph(cell, style) for cell in row] for row in data]
+
+    table = Table(data, hAlign='LEFT')
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (0, -1), colors.grey),
+        ('TEXTCOLOR', (0, 0), (0, -1), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+    ]))
+
+    return table
+
+
 def create_pdf(filename):
     document = SimpleDocTemplate(filename, pagesize=letter)
     elements = []
@@ -67,6 +93,8 @@ def create_pdf(filename):
     elements.append(create_simple_table())
     elements.append(Spacer(1, 12))  # Add some whitespace between the tables
     elements.append(create_mockup_table())
+    elements.append(Spacer(1, 12))  # Add some whitespace between the tables
+    elements.append(create_key_value_table())
     document.build(elements)
 
 if __name__ == "__main__":
