@@ -1,5 +1,5 @@
 from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, PageBreak
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib import colors
 
@@ -85,6 +85,22 @@ def create_key_value_table():
 
     return table
 
+def create_three_key_value_tables():
+    table1 = create_key_value_table()
+    table2 = create_key_value_table()
+    table3 = create_key_value_table()
+
+    # Create a parent table to hold the three key-value tables
+    parent_table = Table(
+        [[table1, table2, table3]],
+        colWidths=[letter[0] / 3] * 3  # Divide the page width into three equal parts
+    )
+    parent_table.setStyle(TableStyle([
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),  # Align all tables to the top
+    ]))
+
+    return parent_table
+
 
 def create_pdf(filename):
     document = SimpleDocTemplate(filename, pagesize=letter)
@@ -95,6 +111,10 @@ def create_pdf(filename):
     elements.append(create_mockup_table())
     elements.append(Spacer(1, 12))  # Add some whitespace between the tables
     elements.append(create_key_value_table())
+    elements.append(Spacer(1, 12))  # Add some whitespace between the tables
+    elements.append(create_three_key_value_tables())
+    elements.append(PageBreak())
+    
     document.build(elements)
 
 if __name__ == "__main__":
