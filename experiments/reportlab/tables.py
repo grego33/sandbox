@@ -30,13 +30,18 @@ def create_simple_table():
 
     return table
 
-def create_mockup_table():
+def create_mockup_table(data_multiplier = 1):
     data = [
         ['Column 1', 'Column 2', 'Column 3', 'Column 4', 'Column 5'],
-        ['Row 1, Col 1', 'Row 1, Col 2', 'Row 1, Col 3', 'Row 1, Col 4', 'Row 1, Col 5'],
-        ['Row 2, Col 1', 'Row 2, Col 2', 'Row 2, Col 3', 'Row 2, Col 4', 'Row 2, Col 5'],
-        ['Row 3, Col 1', 'Row 3, Col 2', 'Row 3, Col 3', 'Row 3, Col 4', 'Row 3, Col 5 with more text']
+        ['Row 1, Col 1', 'Row 1, Col 2', 'Row 1, Col 3', 'Row 1, Col 4', 'Row 1, Col 5 which has a lot of text at the end to demonstrate text wrapping over potentially man lines'],
+        ['Row 2, Col 1', 'Row 2, Col 2', 'Row 2, Col 3', 'Row 2, Col 4', 'Row 2, Col 5 which has more text to try and get a row to wrap across pages'],
+        ['Row 3, Col 1', 'Row 3, Col 2', 'Row 3, Col 3', 'Row 3, Col 4', 'Row 3, Col 5 with even more text now it should wrap across more than two lines and hopefully it will cause a row to try and span pages']
     ]
+
+    # If there is a data multiplier, duplicate the last 3 rows of data that many times
+    if data_multiplier > 1:
+        data = data + data[-3:] * (data_multiplier - 1)
+    
 
     # Calculate column widths
     margin_width  = 72
@@ -48,7 +53,7 @@ def create_mockup_table():
     style = getSampleStyleSheet()['BodyText']
     data = [[Paragraph(cell, style) for cell in row] for row in data]
 
-    table = Table(data, colWidths=[column_width] * num_columns)
+    table = Table(data, colWidths=[column_width] * num_columns, repeatRows=1)
     table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
@@ -114,7 +119,8 @@ def create_pdf(filename):
     elements.append(Spacer(1, 12))  # Add some whitespace between the tables
     elements.append(create_three_key_value_tables())
     elements.append(PageBreak())
-    
+    elements.append(create_mockup_table(100))
+
     document.build(elements)
 
 if __name__ == "__main__":
