@@ -8,6 +8,10 @@ reportlab = "*"
 jinja2 = "*"
 pdfkit = "*"
 weasyprint = "*"
+xhtml2pdf = "*"
+fpdf = "*"
+beautifulsoup4 = "*"
+qrcode = "*"
 
 [dev-packages]
 
