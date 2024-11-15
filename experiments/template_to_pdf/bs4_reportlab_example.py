@@ -28,7 +28,7 @@ def html_to_pdf(html_content, output_filename):
     doc.build(content)
 
 # Read the HTML file
-with open('report.html', 'r') as html_file:
+with open('../../data/report.html', 'r') as html_file:
     html_content = html_file.read()
 
 # Convert HTML to PDF

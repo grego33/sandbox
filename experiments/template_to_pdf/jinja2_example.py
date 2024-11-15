@@ -13,7 +13,7 @@ template = env.get_template('template.html')
 html_output = template.render(data)
 
 # Save the rendered HTML to a file
-with open('report.html', 'w') as html_file:
+with open('../../data/report.html', 'w') as html_file:
     html_file.write(html_output)
 
 print("HTML report generated successfully!")
