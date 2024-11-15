@@ -20,14 +20,31 @@ def following_pages_header(canvas, doc):
 # Create the PDF document
 def create_pdf(filename):
     class MyDocTemplate(BaseDocTemplate):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.vertical_position = self.bottomMargin
+
+        def beforePage(self) -> None:
+            self.vertical_position = 0
+            return super().beforePage()
+        
         def afterFlowable(self, flowable):
-            if isinstance(flowable, Paragraph):
-                print(f'{self.page}: {flowable.getPlainText()}')
+            # if isinstance(flowable, Paragraph):
+            #     print(f'{self.page}: {flowable.getPlainText()}')
+            #     # Update the vertical position
+            #     self.vertical_position += flowable.wrap(self.width, self.height)[1]
+            # elif isinstance(flowable, Spacer):
+            #     self.vertical_position += flowable.height
+
             if self.page == 1:
                 self.handle_nextPageTemplate('FollowingPages')
+            self.vertical_position += flowable.height
+            print(f"Vertical position: {self.vertical_position}")
+
+        def get_remaining_space(self):
+            return self.height - self.vertical_position
 
     doc = MyDocTemplate(filename, pagesize=LETTER, showBoundary=1)
- 
     styles = getSampleStyleSheet()
     story = []
 
@@ -38,11 +55,10 @@ def create_pdf(filename):
 
     # Define frames
     frame = Frame(doc.leftMargin, doc.bottomMargin, doc.width, doc.height - 2 * inch, id='normal')
-    second_frame = Frame(doc.leftMargin, doc.bottomMargin, doc.width, doc.height - 1 * inch, id='smaller_top_margin')
-   
+
     # Define page templates
     first_page_template = PageTemplate(id='FirstPage', frames=frame, onPage=first_page_header)
-    following_pages_template = PageTemplate(id='FollowingPages', frames=second_frame, onPage=following_pages_header)
+    following_pages_template = PageTemplate(id='FollowingPages', frames=frame, onPage=following_pages_header)
 
     # Add templates to the document
     doc.addPageTemplates([first_page_template, following_pages_template])
@@ -50,5 +66,8 @@ def create_pdf(filename):
     # Build the document
     doc.build(story)
 
+    # Print remaining space on the last page
+    print(f"Remaining space on the last page: {doc.get_remaining_space()}")
+
 # Create the PDF
-create_pdf("pagetemplates_demo.pdf")
+create_pdf("data/pagetemplates_demo.pdf")
