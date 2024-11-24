@@ -1,0 +1,191 @@
+<style>
+    @page {
+        @bottom-center {
+            content: element(footer);
+        }
+    }
+
+    footer {
+        position: running(footer);
+        text-align: center;
+    }
+</style>
+<figure class="table" style="width:100%;">
+    <table style="border-style:solid;">
+        <tbody>
+            <tr>
+                <td style="text-align:center;vertical-align:top;width:80%;">
+                    <h1>{{ invoice.store.name }} #{{ invoice.store.number }}</h1>
+                    <h2>{{ invoice.store.slogan }}</h2>
+                    <p>{{ invoice.store.address }}{{ invoice.store.city }}{{ invoice.store.state }}{{ invoice.store.zip
+                        }}</p>
+                    <figure class="table" style="width:100%;">
+                        <table style="border-style:none;">
+                            <tbody>
+                                <tr>
+                                    <td>{{ invoice.store.phone }}</td>
+                                    <td style="text-align:center;">BAR #{{ invoice.store.state_registration }}</td>
+                                    <td style="text-align:right;">EPA #{{ invoice.store.epa_registration }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </figure>
+                </td>
+                <td style="width:20%;">
+                    <figure class="image"><img style="aspect-ratio:386/390;"
+                            src="https://support.thinkific.com/hc/article_attachments/360042081334/5d37325ea1ff6.png"
+                            width="386" height="390"></figure>
+                    <p>&nbsp;</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</figure>
+<figure class="table" style="width:100%;">
+    <table style="border-style:solid;">
+        <tbody>
+            <tr>
+                <td style="background-color:hsl(0, 0%, 90%);">NAME</td>
+                <td>{{ invoice.customer.last_name }}, {{ invoice.customer.first_name }}</td>
+                <td style="background-color:hsl(0, 0%, 90%);">PLATE #</td>
+                <td>{{ invoice.vehicle.plate }}</td>
+                <td style="background-color:hsl(0, 0%, 90%);">VIN</td>
+                <td>{{ invoice.vehicle.vin }}</td>
+            </tr>
+            <tr>
+                <td style="background-color:hsl(0, 0%, 90%);">ADDRESS</td>
+                <td>{{ invoice.customer.address }}</td>
+                <td style="background-color:hsl(0, 0%, 90%);">MAKE</td>
+                <td>{{ invoice.vehicle.make }}</td>
+                <td style="background-color:hsl(0, 0%, 90%);">INVOICE #</td>
+                <td>{{ invoice.invoice_number }}</td>
+            </tr>
+            <tr>
+                <td style="background-color:hsl(0, 0%, 90%);">&nbsp;</td>
+                <td>{{ invoice.customer.city }} {{ invoice.customer.state }}, {{ invoice.customer.zip }}</td>
+                <td style="background-color:hsl(0, 0%, 90%);">MODEL</td>
+                <td>{{ invoice.vehicle.model}}</td>
+                <td style="background-color:hsl(0, 0%, 90%);">DATE</td>
+                <td>{{ invoice.invoice_date }}</td>
+            </tr>
+            <tr>
+                <td style="background-color:hsl(0, 0%, 90%);">&nbsp;</td>
+                <td>{{ invoice.customer.phone }}</td>
+                <td style="background-color:hsl(0, 0%, 90%);">MILEAGE</td>
+                <td>{{ invoice.vehicle.mileage }}</td>
+                <td style="background-color:hsl(0, 0%, 90%);">EMP #</td>
+                <td>{{ invoice.work_order.service_advisor }}</td>
+            </tr>
+        </tbody>
+    </table>
+</figure>
+<figure class="table" style="width:100%;">
+    <table>
+        <thead style="background-color:hsl(0, 0%, 90%);">
+            <tr>
+                <th>TECH</th>
+                <th>DESCRIPTION</th>
+                <th>PART CODE</th>
+                <th>QTY</th>
+                <th>TOTAL</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for service in invoice.services %}
+            <tr>
+                <td>{{ service.technician_id }}</td>
+                <td>{{ service.description }}</td>
+                <td>{{ service.service_sku }}</td>
+                <td>{{ service.labor_hrs }}</td>
+                <td>{{ service.labor_rate | currency }}</td>
+            </tr>
+            {% for part in service.parts %}
+            <tr>
+                <td></td>
+                <td>{{ part.description }}</td>
+                <td>{{ part.part_number }}</td>
+                <td>{{ part.quantity }}</td>
+                <td>{{ part.price | currency }}</td>
+            </tr>
+            {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+</figure>
+<footer>
+    <figure class="table" style="width:100%;">
+        <table>
+            <tbody>
+                <tr>
+                    <td style="text-align:left;">
+                        <p>All parts are new unless otherwise stated.</p>
+                        <p>Reference Estimate/Work Order #&nbsp;<u> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                &nbsp;
+                                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</u></p>
+                        <p>I acknowledge notice and oral approval of an increase in the original estimated price.</p>
+                        <p><strong>X</strong><u> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                &nbsp;
+                                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                &nbsp;
+                                &nbsp; &nbsp; &nbsp; &nbsp;</u></p>
+                    </td>
+                    <td style="text-align:left; vertical-align:top;">Payments</td>
+                    <td style="text-align:center;vertical-align:top;" rowspan="3">
+                        <p>Charge Summary</p>
+                        <figure class="table" style="width:100%;">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>Parts</td>
+                                        <td>
+                                            {{ invoice.services | get_parts_total | currency }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Labor</td>
+                                        <td>
+                                            {{ invoice.services | get_labor_total | currency }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </figure>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:left;">
+                        <figure class="table" style="width:100%;">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Service History</th>
+                                        <th>Miles</th>
+                                        <th>Date</th>
+                                        <th>Next Service Due</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </figure>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <p>SUBJECT TO TERMS AND CONDITIONS ON THE REVERSE SIDE OF THIS CONTRACT. &nbsp;PLEASE READ
+                            REVERSE
+                            SIDE.</p>
+                        <p>Authorizing Signature: <strong>X</strong></p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </figure>
+</footer>
