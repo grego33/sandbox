@@ -12,6 +12,7 @@ xhtml2pdf = "*"
 fpdf = "*"
 beautifulsoup4 = "*"
 qrcode = "*"
+sqlalchemy = "*"
 
 [dev-packages]
 
